@@ -1,7 +1,10 @@
 Simple vanilla javascript calendar plugin, for django server-side rendering with htmx.
+<br>
 HEAVILY inspired by https://v2.vanilla-calendar.pro/
 <br>
+<br>
 ![](https://github.com/logmead/calendar_test/blob/master/chrome-capture-2025-4-22.gif)
+<br>
 <br>
 Django Demo:
 1. Download this repo - django app with the calendar
