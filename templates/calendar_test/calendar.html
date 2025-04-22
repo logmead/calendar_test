@@ -1,0 +1,89 @@
+    <div id="calendar-object">
+        
+        <form id="calendar-form" data-url="{% url 'calendar' %}" hidden>
+            {% csrf_token %}
+            {{ form }}
+        </form>
+
+        <div class="cal-header">
+            <div><i data-sub="{{ prev_month }}" onclick="sendForm(this);">{% include "calendar_test/chevron-left.html" %}</i></div>
+            
+            <div>
+                <span onclick="pairVisibility(this);" data-first="cal-months-container" data-second="actual-calendar" data-third="cal-years-container">
+                    {{ month_text }}</span>&nbsp;
+                <span onclick="pairVisibility(this);" data-first="cal-years-container" data-second="actual-calendar" data-third="cal-months-container">
+                    {{ year_num }}</span>
+            </div>
+            <div><i data-sub="{{ next_month }}" onclick="sendForm(this);">{% include "calendar_test/chevron-right.html" %}</i></div>
+        </div>
+
+        <div id="cal-months-container" hidden>
+            {% for row in months %}
+            <div class="cal-months-choice">
+            {% for month in row %}
+                <div class="cal-month-choice" data-sub="{{ month.string }}" onclick="sendForm(this);">{{ month.name }}</div>
+            {% endfor %}
+            </div>
+            {% endfor %}
+        </div>
+
+        <div id="cal-years-container"  hidden>
+            {% for row in years %}
+            <div class="cal-years-choice">
+			{% for year in row %}
+                <div class="cal-year-choice" data-sub="{{ year.string }}" onclick="sendForm(this);">{{ year.name }}</div>
+            {% endfor %}
+			</div>
+            {% endfor %}
+        </div>
+
+
+        <div id="actual-calendar">
+            <div class="cal-weekdays">
+                {% for weekday in weekdays %}
+                    <div class="cal-weekday">{{ weekday }}</div>
+                {% endfor %}
+            </div>
+            <div class="cal-days-container">
+                
+                {% for week in weeks %}
+
+                    <div class="cal-week-container">
+                        {% for day in week %}
+                            <div data-sub="{{ day.string }}"
+                            class="cal-day 
+							{% if day.day == today %}cal-selected {% endif %}
+							{% if day.inactive %}
+								cal-inactive
+								{% if day.alert %} inactive-alert-day {% endif %}
+
+							{% else %}
+								cal-active
+								{% if day.alert %} alert-day {% endif %}
+                            {% endif %}"
+
+							{% if day.inactive %}
+                            onclick="sendForm(this);"
+                            {% else %}
+								{% if day.alert %}
+									onclick="showOneTable(this);" 
+									data-id="{{ day.alert.id }}"
+								{% endif %}
+							{% endif %}
+                            >
+                                <div>{{ day.day.day }}</div>
+                               	
+								{% if day.alert %}
+									<div class="{% if day.inactive %} cal-inactive-objects{% else %}cal-objects {% endif %}">{{ day.objects }}</div>
+								{% endif %}
+                            </div>
+                        {% endfor %}
+                    </div>
+                {% endfor %}
+            </div>
+        </div>
+
+
+
+    </div>
+
